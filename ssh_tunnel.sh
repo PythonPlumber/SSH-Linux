@@ -31,7 +31,7 @@ start_tunnel() {
     echo "◈──────────────────◈"
     echo "©️ 🕸 Spider SSH 🕸"
     echo "◈──────────────────◈"
-  } | sshpass -p "$password" ssh -N -f -L 8080:localhost:80 -p "$port" "$username@$host" >> "$LOG_FILE" 2>&1
+  } | sshpass -p "$password" ssh -N -f -L 8080:localhost:80 -o "StrictHostKeyChecking=no" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "DynamicForward=socks5://localhost:1080" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -p "$port" "$username@$host" -D "$sni_bughost" >> "$LOG_FILE" 2>&1
 
   log "SSH tunnel started for profile: $profile_name"
 }
@@ -80,6 +80,9 @@ fi
 # Parse the command-line arguments
 profile_name=$1
 action=$2
+
+# Load SNI and BugHost values from the configuration file
+sni_bughost=$(jq -r '.sni_bughost' "$CONFIG_FILE")
 
 # Perform the requested action
 case "$action" in
