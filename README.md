@@ -16,7 +16,9 @@ This script allows you to easily manage SSH tunneling on your Linux system. It r
 - SSH access to the remote servers
 
 ## Configuration
+Getting Started
 
+- Clone or download the Spider SSH repository to your local machine.
 1. Open the `ssh_config.json` file and update it with your SSH profiles.
 2. Each profile should include the following information:
    - `name`: Profile name for identification
