@@ -7,7 +7,7 @@ LOG_FILE="ssh_tunnel.log"
 # Read SSH configuration from JSON file
 read_config() {
   local profile_name=$1
-  jq -r --arg profile "$profile_name" '.profiles[] | select(.name == $profile) | {host, username, password, port}' "$CONFIG_FILE"
+  jq -r --arg profile "$profile_name" '.profiles[] | select(.name == $profile) | {host, username, password, port, sni_bughost}' "$CONFIG_FILE"
 }
 
 # Start SSH tunnel
@@ -24,6 +24,7 @@ start_tunnel() {
   local username=$(jq -r '.username' <<< "$config")
   local password=$(jq -r '.password' <<< "$config")
   local port=$(jq -r '.port' <<< "$config")
+  local sni_bughost=$(jq -r '.sni_bughost' <<< "$config")
 
   log "Starting SSH tunnel for profile: $profile_name"
 
@@ -31,7 +32,7 @@ start_tunnel() {
     echo "◈──────────────────◈"
     echo "©️ 🕸 Spider SSH 🕸"
     echo "◈──────────────────◈"
-  } | sshpass -p "$password" ssh -N -f -L 8080:localhost:80 -o "StrictHostKeyChecking=no" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "DynamicForward=socks5://localhost:1080" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -p "$port" "$username@$host" -D "$sni_bughost" >> "$LOG_FILE" 2>&1
+  } | sshpass -p "$password" ssh -N -f -L 8080:localhost:80 -o "StrictHostKeyChecking=no" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval=60" -o "ServerAliveCountMax=3" -o "TCPKeepAlive=yes" -o "GatewayPorts=yes" -o "StreamLocalBindUnlink=yes" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -p "$port" "$username@$host" -D "$sni_bughost" -C -N -L 443:localhost:443 >> "$LOG_FILE" 2>&1
 
   log "SSH tunnel started for profile: $profile_name"
 }
@@ -80,9 +81,6 @@ fi
 # Parse the command-line arguments
 profile_name=$1
 action=$2
-
-# Load SNI and BugHost values from the configuration file
-sni_bughost=$(jq -r '.sni_bughost' "$CONFIG_FILE")
 
 # Perform the requested action
 case "$action" in
