@@ -1,0 +1,18 @@
+{
+  "profiles": [
+    {
+      "name": "profile1",
+      "host": "example.com",
+      "username": "your_username",
+      "password": "your_password",
+      "port": 22
+    },
+    {
+      "name": "profile2",
+      "host": "anotherexample.com",
+      "username": "your_username",
+      "password": "your_password",
+      "port": 22
+    }
+  ]
+}
