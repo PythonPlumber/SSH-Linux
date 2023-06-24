@@ -52,3 +52,5 @@ To enable or disable logging, you can comment or uncomment the `log` function ca
 
 # License
 This script is released under the MIT License.
+
+**Disclaimer: The authors of this tool are not responsible for any misuse or illegal activities conducted using this tool. Use at your own risk.**
