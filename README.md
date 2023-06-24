@@ -1,3 +1,10 @@
+<p align="center">
+  <b>◈──────────────────◈<br>
+  ©️ 🕸 Spider SSH 🕸<br>
+  ◈──────────────────◈</b>
+</p>
+
+
 # SSH Tunneling Script
 
 This script allows you to easily manage SSH tunneling on your Linux system. It reads SSH configuration from a JSON file and starts or stops SSH tunnels based on the specified profiles.
