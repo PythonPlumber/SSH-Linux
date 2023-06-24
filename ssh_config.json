@@ -1,17 +1,18 @@
 {
+  "sni_bughost": "facebook.com",
   "profiles": [
     {
-      "name": "profile1",
+      "name": "Profile 1",
       "host": "example.com",
-      "username": "your_username",
-      "password": "your_password",
+      "username": "user1",
+      "password": "password1",
       "port": 22
     },
     {
-      "name": "profile2",
-      "host": "anotherexample.com",
-      "username": "your_username",
-      "password": "your_password",
+      "name": "Profile 2",
+      "host": "example.org",
+      "username": "user2",
+      "password": "password2",
       "port": 22
     }
   ]
